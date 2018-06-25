@@ -1,0 +1,35 @@
+{
+  "name": "profile",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "userId": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "birthdate": {
+      "type": "date"
+    },
+    "gender": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "city": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,16 @@
+export const SERVER = 'http://localhost:3000';
+export const SERVER_API = 'http://localhost:3000/api';
+export const URL_LIST = 'https://api.themoviedb.org/3/discover/movie';
+export const URL_SEARCH = 'https://api.themoviedb.org/3/search/movie?query=';
+export const URL_DETAIL = 'https://api.themoviedb.org/3/movie/';
+export const URL_PERSON = 'https://api.themoviedb.org/3/person/';
+export const URL_IMG = 'https://image.tmdb.org/t/p/';
+export const URL_YOUTUBE = 'https://www.youtube.com/embed/';
+export const URL_CAST = '/casts';
+export const URL_VIDEO = '/videos';
+export const IMG_SIZE_XSMALL = 'w45/';
+export const IMG_SIZE_SMALL = 'w150/';
+export const IMG_PROFILE_SIZE_SMALL = 'w185/';
+export const IMG_SIZE_LARGE = 'w342/';
+export const MOVIEDB_API_KEY = '80103bdff7b6dda984e3febc9a9a486f';
+export const MOVIEDB_API_KEY_Q = '?api_key=80103bdff7b6dda984e3febc9a9a486f';
