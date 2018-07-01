@@ -3,6 +3,7 @@ import logo from './../assets/images/logo.svg';
 import moviedbLogo from './../assets/images/themoviedb-green.svg';
 import { NavbarBrand, NavbarToggler, Collapse, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavItem, Nav, Navbar } from 'reactstrap';
 import { loginHelpers } from 'src/api/login/loginHelper';
+import { SearchBarWithRouter } from './SearchBar';
 
 interface State {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export class MenuTop extends React.Component<{}, State> {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
+              <SearchBarWithRouter />
               <NavItem><NavLink href="/movies">Movies</NavLink></NavItem>
               <NavItem><NavLink href="/about">About</NavLink></NavItem>
               <UncontrolledDropdown nav inNavbar>
@@ -42,9 +44,9 @@ export class MenuTop extends React.Component<{}, State> {
                   <i className="fa fa-cog"></i>
                 </DropdownToggle>
                 <DropdownMenu right>
-                <DropdownItem>
-                        <NavItem><NavLink href="/profile">Profile</NavLink></NavItem>
-                      </DropdownItem>
+                  <DropdownItem>
+                    <NavItem><NavLink href="/profile">Profile</NavLink></NavItem>
+                  </DropdownItem>
                   <DropdownItem divider />
                   {
                     loginHelpers.loggedIn() ?

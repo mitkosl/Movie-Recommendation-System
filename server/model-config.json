@@ -38,5 +38,9 @@
   "profile": {
     "dataSource": "db",
     "public": true
+  },
+  "rating": {
+    "dataSource": "db",
+    "public": true
   }
 }

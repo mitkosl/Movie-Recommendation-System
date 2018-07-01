@@ -12,5 +12,5 @@
         "**/package-lock.json": true,
         "**/.DS_Store": true
     },
-    "workbench.colorTheme": "Monokai Dimmed"
+    "workbench.colorTheme": "Default Dark+"
 }

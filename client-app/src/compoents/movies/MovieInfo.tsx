@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { Rating } from 'semantic-ui-react'
 import { theMovieDb } from '../../api';
 import { Movie } from '.';
 import { Link } from 'react-router-dom';
 import { URL_IMG, IMG_PROFILE_SIZE_SMALL, URL_YOUTUBE } from '../../consts';
+import { ratingsAPI } from '../../api/ratingApi';
 
 interface Props {
     history: any;
@@ -12,6 +14,7 @@ interface Props {
 
 interface State {
     movie: any;
+    rating: number;
     casts: any[];
     trailers: any[];
 }
@@ -21,6 +24,7 @@ export class MovieInfo extends React.Component<Props, State> {
         super(props);
         this.state = {
             movie: {},
+            rating: 0,
             casts: [],
             trailers: [],
         }
@@ -81,6 +85,27 @@ export class MovieInfo extends React.Component<Props, State> {
             })
     }
 
+    private onRate = (e, { rating }) => {
+        console.log(e);
+        this.setState({ rating });
+        let userId = sessionStorage.getItem('userId');
+        if (userId) {
+            let r = {
+                rating,
+                userId,
+                movieId: this.state.movie.id,
+            }
+            ratingsAPI.saveRating(r)
+                .then(res => {
+                    this.setState({ rating: res.rating });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+        else
+            this.props.history.push('/login');
+    }
     render() {
         let movie = this.state.movie;
         return (
@@ -94,13 +119,14 @@ export class MovieInfo extends React.Component<Props, State> {
                             <h1 className="title">{movie.title}</h1>
                             <div>
                                 <h4>{movie.vote_average} <i className="fa fa-star" style={{ color: 'yellow' }}></i></h4>
+                                Give rating: <Rating maxRating={10} rating={this.state.rating} onRate={this.onRate} icon='star' size='huge' />
                                 <h4>{movie.release_date}</h4>
                                 <p>{movie.overview}</p>
                             </div>
                             <hr />
                             <Trailers trailers={this.state.trailers} />
                             <hr />
-                            <Casts casts={this.state.casts}/>
+                            <Casts casts={this.state.casts} />
                         </div>
                     </div>
                 </div>

@@ -1,10 +1,8 @@
 
 import * as React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
-import { PublicMovies, Login, About, MovieContainer, Register, StarInfo } from '.';
-import { MovieInfo } from 'src/compoents/movies';
+import { PublicMovies, Login, About, MovieContainer, Register, StarInfo, Profile, ProfileEdit, MovieInfo } from '.';
 import { loginHelpers } from 'src/api/login/loginHelper';
-import { Profile } from './Profile';
 import { Link } from 'react-router-dom';
 
 const loggedIn = () => {
@@ -36,19 +34,21 @@ const PublicRouteOnly = ({ component: Component, ...rest }) => (
     )} />
 )
 
-export const Main = () => (
+export const Main = (props) => (
     <main>
         <Switch>
             <Route exact path="/" render={() => (
                 loggedIn() ? (<Redirect to="/movies" />) :
-                    (<PublicMovies />)
+                    (<PublicMovies {...props} />)
             )} />
             <Route exact path='/movies' component={MovieContainer} />
             <Route exact path='/login' component={Login} />
             <PrivateRoute exact path='/logout' component={Logout} />
             <PrivateRoute exact path='/profile' component={Profile} />
+            <PrivateRoute exact path='/profile/edit' component={ProfileEdit} />
             <Route exact path='/about' component={About} />
             <PublicRouteOnly exact path='/register' component={Register} />
+            <Route exact path='/search/:searchQuery' component={MovieContainer} />
             <Route exact path='/movie/:id' component={MovieInfo} />
             <Route exact path='/star/:id' component={StarInfo} />
             <Route exact path='*' component={MissingRoute} />
@@ -58,6 +58,7 @@ export const Main = () => (
 
 const Logout = () => {
     loginHelpers.deleteUserToken();
+    sessionStorage.removeItem('userId');
     return (
         <Redirect to="/" />
     );

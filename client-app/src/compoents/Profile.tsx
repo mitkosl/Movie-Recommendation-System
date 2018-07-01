@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { userAPI } from '../api';
+import { Link } from 'react-router-dom';
 
 interface Props {
     history: any;
@@ -31,7 +32,7 @@ export class Profile extends React.Component<Props, State> {
                     var user = res;
                     userAPI.getUserProfile(userId)
                         .then(res => {
-                            this.setState({ profile: { ...res, ...user } });
+                            this.setState({ profile: { ...user, ...res } });
                         })
                         .catch(err => {
                             console.log(err);
@@ -72,7 +73,7 @@ export class Profile extends React.Component<Props, State> {
                                 <div className="clearfix"></div>
                                 <div className="bot-border"></div>
 
-                                <div className="col-sm-5 col-xs-6 tital " >Date Of Birth:</div><div className="col-sm-7 profile-value">{new Date(profile.date).toLocaleDateString()}</div>
+                                <div className="col-sm-5 col-xs-6 tital " >Date Of Birth:</div><div className="col-sm-7 profile-value">{new Date(profile.birthdate).toLocaleDateString()}</div>
 
                                 <div className="clearfix"></div>
                                 <div className="bot-border"></div>
@@ -86,7 +87,7 @@ export class Profile extends React.Component<Props, State> {
 
                             </div>
                         </div>
-                        {/* <button type="button" className="btn btn-primary  login-button">Edit</button> */}
+                        <Link to="profile/edit"><button type="button" className="btn btn-primary  login-button">Edit</button></Link>
 
                     </div>
                 </div>

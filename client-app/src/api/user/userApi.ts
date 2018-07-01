@@ -11,8 +11,14 @@ const gerUserUrl = (id) => SERVER_API + `/users/${id}?access_token=${token}`;
 const gerUserProfilesUrl = SERVER_API + `/profiles?access_token=${token}`;
 
 const registerUserProfile = (profile: UserProfile): Promise<any> => {
+    let method: string;
+    if (profile.id) { // should use only POST becauce we can not edit elements...  PUT is left just in case it is needed
+        method = "PUT";
+    } else {
+        method = "POST";
+    }
     return axios.request({
-        method: 'post',
+        method: method,
         url: registerUserProfileUrl,
         data: JSON.stringify(profile),
         headers: {

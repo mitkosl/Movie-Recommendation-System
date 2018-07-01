@@ -1,32 +1,23 @@
 {
-  "name": "profile",
+  "name": "rating",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
+    "rating": {
+      "type": "number",
+      "required": true,
+      "default": 0
+    },
     "userId": {
       "type": "string",
       "required": true
     },
-    "name": {
+    "movieId": {
       "type": "string",
       "required": true
-    },
-    "birthdate": {
-      "type": "date"
-    },
-    "gender": {
-      "type": "boolean",
-      "required": true,
-      "default": true
-    },
-    "city": {
-      "type": "string"
-    },
-    "phone": {
-      "type": "string"
     }
   },
   "validations": [],
