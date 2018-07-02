@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Rating } from 'semantic-ui-react'
+import { Rating as RatingSemantic } from 'semantic-ui-react'
 import { theMovieDb } from '../../api';
 import { Movie } from '.';
 import { Link } from 'react-router-dom';
 import { URL_IMG, IMG_PROFILE_SIZE_SMALL, URL_YOUTUBE } from '../../consts';
 import { ratingsAPI } from '../../api/ratingApi';
+import { Rating } from '../../models';
 
 interface Props {
     history: any;
@@ -14,7 +15,7 @@ interface Props {
 
 interface State {
     movie: any;
-    rating: number;
+    rating: Rating;
     casts: any[];
     trailers: any[];
 }
@@ -24,7 +25,11 @@ export class MovieInfo extends React.Component<Props, State> {
         super(props);
         this.state = {
             movie: {},
-            rating: 0,
+            rating: {
+                userId: "",
+                rating: 0,
+                movieId: "",
+            },
             casts: [],
             trailers: [],
         }
@@ -40,16 +45,25 @@ export class MovieInfo extends React.Component<Props, State> {
         var self = this
         let id = this.props.match.params.id;
         theMovieDb.movies.getById({ "id": id },
-            function (movie) {
-                movie = JSON.parse(movie)
+            (movie) => {
+                movie = JSON.parse(movie);
                 if (movie) {
-                    self.setState({ movie })
+                    self.setState({ movie });
                 }
             },
-            function (error) {
+            (error) => {
                 // do something with errorCallback
                 console.error(error);
+            });
+        let userId = sessionStorage.getItem('userId');
+        ratingsAPI.getRating(id, userId)
+            .then(res => {
+                if (res)
+                    this.setState({ rating: res });
             })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     private getCastList = () => {
@@ -87,17 +101,18 @@ export class MovieInfo extends React.Component<Props, State> {
 
     private onRate = (e, { rating }) => {
         console.log(e);
-        this.setState({ rating });
+        let r = { ...this.state.rating, rating };
         let userId = sessionStorage.getItem('userId');
         if (userId) {
-            let r = {
-                rating,
-                userId,
-                movieId: this.state.movie.id,
-            }
+            if (!r.id)
+                r = {
+                    userId,
+                    rating,
+                    movieId: this.props.match.params.id,
+                }
             ratingsAPI.saveRating(r)
                 .then(res => {
-                    this.setState({ rating: res.rating });
+                    this.setState({ rating: res });
                 })
                 .catch(err => {
                     console.log(err);
@@ -119,7 +134,7 @@ export class MovieInfo extends React.Component<Props, State> {
                             <h1 className="title">{movie.title}</h1>
                             <div>
                                 <h4>{movie.vote_average} <i className="fa fa-star" style={{ color: 'yellow' }}></i></h4>
-                                Give rating: <Rating maxRating={10} rating={this.state.rating} onRate={this.onRate} icon='star' size='huge' />
+                                Give rating: <RatingSemantic maxRating={10} rating={this.state.rating.rating} onRate={this.onRate} icon='star' size='huge' />
                                 <h4>{movie.release_date}</h4>
                                 <p>{movie.overview}</p>
                             </div>
